@@ -9,12 +9,15 @@ public class Movement2D : MonoBehaviour
     [SerializeField]
     private Vector3 moveDirection = Vector3.zero;
 
+    public float distance = 0;
+
     public float MoveSpeed => moveSpeed;
 
     // Update is called once per frame
     void Update()
     {
         transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        distance += moveSpeed * Time.deltaTime;
     }
 
     public void MoveTo(Vector3 direction)
