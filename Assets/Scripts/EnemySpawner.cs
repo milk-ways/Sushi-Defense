@@ -5,21 +5,29 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject enemyPrefab; //ÀûÇÁ¸®Æé
+    private GameObject enemyPrefab; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
-    private float spawnTime; //Àû »ı¼ºÁÖ±â
+    private GameObject enmeyHPSliderPrefab; //ì  ì²´ë ¥ì„ ë‚˜íƒ€ë‚´ëŠ” Slider UI í”„ë¦¬í©
     [SerializeField]
-    private Transform[] wayPoints; //ÀÌµ¿°æ·Î
-    private List<Enemy> enemyList; //Á¸ÀçÇÏ´Â ¸ğµç ÀûÀÇ Á¤º¸
+    private Transform canvasTransform; //UIë¥¼ í‘œí˜„í•˜ëŠ” Canvas ì˜¤ë¸Œì íŠ¸ì˜ Transform
+    [SerializeField]
+    private float spawnTime; //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
+    [SerializeField]
+    private Transform[] wayPoints; //ï¿½Ìµï¿½ï¿½ï¿½ï¿½
+    [SerializeField]
+    private PlayerHP playerHP; //í”Œë ˆì´ì–´ì˜ ì²´ë ¥ ì»´í¬ë„ŒíŠ¸
+    [SerializeField]
+    private PlayerGold playerGold; //í”Œë ˆì´ì–´ì˜ ê³¨ë“œ ì»´í¬ë„ŒíŠ¸
+    private List<Enemy> enemyList; //ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    // ÀûÀÇ »ı¼º°ú »èÁ¦´Â EnemySpawner¿¡¼­ ÇÏ±â ¶§¹®¿¡ SetÀº ÇÊ¿ä¾ø´Ù.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ EnemySpawnerï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Setï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½.
     public List<Enemy> EnemyList => enemyList;
 
     private void Awake()
     {
-        //Àû ¸®½ºÆ® ¸Ş¸ğ¸® ÇÒ´ç
+        //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ş¸ï¿½ ï¿½Ò´ï¿½
         enemyList = new List<Enemy>();
-        //Àû »ı¼º ÄÚ·çÆ¾ ÇÔ¼ö È£Ãâ
+        //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½Ô¼ï¿½ È£ï¿½ï¿½
         StartCoroutine("SpawnEnemy"); 
     }
 
@@ -27,22 +35,52 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            GameObject clone = Instantiate(enemyPrefab); // Àû ¿ÀºêÁ§Æ® »ı¼º
-            Enemy enemy = clone.GetComponent<Enemy>();   // ¹æ±İ »ı¼ºµÈ ÀûÀÇ Enemy ÄÄÆ÷³ÍÆ®
+            GameObject clone = Instantiate(enemyPrefab); // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+            Enemy enemy = clone.GetComponent<Enemy>();   // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Enemy ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
-            // this´Â ³ª ÀÚ½Å(ÀÚ½ÅÀÇ EnemySpawner Á¤º¸)
-            enemy.Setup(this,wayPoints);                // wayPoint Á¤º¸¸¦ ¸Å°³º¯¼ö·Î Setup() È£Ãâ
-            enemyList.Add(enemy);                        // ¸®½ºÆ®¿¡ ¹æ±İ »ı¼ºµÈ Àû Á¤º¸ ÀúÀå
+            // thisï¿½ï¿½ ï¿½ï¿½ ï¿½Ú½ï¿½(ï¿½Ú½ï¿½ï¿½ï¿½ EnemySpawner ï¿½ï¿½ï¿½ï¿½)
+            enemy.Setup(this,wayPoints);                // wayPoint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Setup() È£ï¿½ï¿½
+            enemyList.Add(enemy);                        // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            
+            SpawnEnemyHPSlider(clone);                   // ì  ì²´ë ¥ì„ ë‚˜íƒ€ë‚´ëŠ” Slider UI ìƒì„± ë° ì„¤ì •
 
-            yield return new WaitForSeconds(spawnTime);  // spawnTime ½Ã°£ µ¿¾È ´ë±â
+            yield return new WaitForSeconds(spawnTime);  // spawnTime ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         }
     }
 
-    public void DestroyEnemy(Enemy enemy)
+    public void DestroyEnemy(EnemyDestroyType type, Enemy enemy, int gold)
     {
-        // ¸®½ºÅÍ¿¡¼­ »ç¸ÁÇÏ´Â Àû Á¤º¸ »èÁ¦
+        // ì ì´ ëª©í‘œì§€ì ê¹Œì§€ ë„ì°©í–ˆì„ ë•Œ
+        if ( type == EnemyDestroyType.Arrive)
+        {
+            // í”Œë ˆì´ì–´ì˜ ì²´ë ¥ -1
+            playerHP.TakeDamage(1);
+        }
+        // ì ì´ í”Œë ˆì´ì–´ì˜ ë°œì‚¬ì²´ì—ê²Œ ì‚¬ë§í–ˆì„ ë•Œ
+        else if ( type == EnemyDestroyType.Kill )
+        {
+            // ì ì˜ ì¢…ë¥˜ì— ë”°ë¼ ì‚¬ë§ ì‹œ ê³¨ë“œ íšë“
+            playerGold.CurrentGold += gold;
+        }
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         enemyList.Remove(enemy);
-        // Àû ¿ÀºêÁ§Æ® »èÁ¦
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         Destroy(enemy.gameObject);
+    }
+
+    private void SpawnEnemyHPSlider(GameObject enemy)
+    {
+        // ì  ì²´ë ¥ì„ ë‚˜íƒ€ë‚´ëŠ” Slider UI ìƒì„±
+        GameObject sliderClone = Instantiate(enmeyHPSliderPrefab);
+        // Slider UI ì˜¤ë¸Œì íŠ¸ë¥¼ parent("Canvas" ì˜¤ë¸Œì íŠ¸)ì˜ ìì‹ìœ¼ë¡œ ì„¤ì •
+        // UIëŠ” ìº”ë²„ìŠ¤ì˜ ìì‹ ì˜¤ë¸Œì íŠ¸ë¡œ ì„¤ì •ë˜ì–´ ìˆì–´ì•¼ í™”ë©´ì— ë³´ì´ê¸°ì—
+        sliderClone.transform.SetParent(canvasTransform);
+        // ê³„ì¸µ ì„¤ì •ìœ¼ë¡œ ë°”ë€ í¬ê¸°ë¥¼ ë‹¤ì‹œ (1,1,1)ë¡œ ì„¤ì •
+        sliderClone.transform.localScale = Vector3.one;
+
+        // Slider UIê°€ ì«“ì•„ë‹¤ë‹ ëŒ€ìƒì„ ë³¸ì¸ìœ¼ë¡œ ì„¤ì •
+        sliderClone.GetComponent<SliderPositionAutoSetter>().Setup(enemy.transform);
+        // Slider UIì— ìì‹ ì˜ ì²´ë ¥ ì •ë³´ë¥¼ í‘œì‹œí•˜ë„ë¡ ì„¤ì •
+        sliderClone.GetComponent<EnemyHPViewer>().Setup(enemy.GetComponent<EnemyHP>());
     }
 }

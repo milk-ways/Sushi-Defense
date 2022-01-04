@@ -2,46 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyDestroyType { Kill = 0, Arrive }
+
 public class Enemy : MonoBehaviour
 {
-    private int wayPointCount;         //ÀÌµ¿ °æ·Î °³¼ö
-    private Transform[] wayPoints;     //ÀÌµ¿ °æ·Î Á¤º¸
-    private int currentIndex = 0;      //ÇöÀç ¸ñÇ¥ÁöÁ¡ ÀÎµ¦½º
-    private Movement2D movement2D;     //¿ÀºêÁ§Æ® ÀÌµ¿ Á¦¾î
-    private EnemySpawner enemySpawner; //ÀûÀÇ »èÁ¦¸¦ º»ÀÎÀÌ ÇÏÁö ¾Ê°í EnemySpaner¿¡ ¾Ë·Á¼­ »èÁ¦
+    private int wayPointCount;         //ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private Transform[] wayPoints;     //ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private int currentIndex = 0;      //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
+    private Movement2D movement2D;     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+    private EnemySpawner enemySpawner; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ EnemySpanerï¿½ï¿½ ï¿½Ë·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [SerializeField]
+    private int gold = 10; //ì  ì‚¬ë§ì‹œ íšë“ ê°€ëŠ¥í•œ ê³¨ë“œ
 
     public void Setup(EnemySpawner enemySpawner, Transform[] wayPoints)
     {
         movement2D = GetComponent<Movement2D>();
         this.enemySpawner = enemySpawner;
 
-        // Àû ÀÌµ¿ °æ·Î wayPoints Á¤º¸ ¼³Á¤
+        // ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ wayPoints ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         wayPointCount = wayPoints.Length;
         this.wayPoints = new Transform[wayPointCount];
         this.wayPoints = wayPoints;
 
-        // ÀûÀÇ À§Ä¡¸¦ Ã¹¹øÂ° wayPoint À§Ä¡·Î ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ã¹ï¿½ï¿½Â° wayPoint ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         transform.position = wayPoints[currentIndex].position;
 
-        // Àû ÀÌµ¿/¸ñÇ¥ÁöÁ¡ ¼³Á¤ ÄÚ·çÆ¾ ÇÔ¼ö ½ÃÀÛ
+        // ï¿½ï¿½ ï¿½Ìµï¿½/ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         StartCoroutine("OnMove");
     }
 
     private IEnumerator OnMove()
     {
-        //´ÙÀ½ ÀÌµ¿ ¹æÇâ ¼³Á¤
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         NextMoveTo();
 
         while (true)
         {
-            //Àû ¿ÀºêÁ§Æ® È¸Àü
+            //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È¸ï¿½ï¿½
             transform.Rotate(Vector3.forward * 10);
 
-            // ÀûÀÇ ÇöÀçÀ§Ä¡¿Í ¸ñÇ¥À§Ä¡ÀÇ °Å¸®°¡ 0.02 * movemet2D.MoveSpeed º¸´Ù ÀÛÀ» ¶§ if Á¶°Ç¹® ½ÇÇà
-            // movement2D Àú°Å °öÇØÁÖ´Â ÀÌÀ¯´Â ¼Óµµ°¡ ºü¸£¸é ÇÑ ÇÁ·¹ÀÓ¿¡ 0.02º¸´Ù Å©°Ô ¿òÁ÷ÀÌ±â ¶§¹®¿¡if Á¶°Ç¹®¿¡ °É¸®Áö ¾Ê°í °æ·Î¸¦ Å»ÁÖÇÏ´Â ¿ÀºêÁ§Æ®°¡ ¹ß»ı °¡´É
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ 0.02 * movemet2D.MoveSpeed ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ if ï¿½ï¿½ï¿½Ç¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // movement2D ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ 0.02ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½if ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ï¿½Î¸ï¿½ Å»ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (Vector3.Distance(transform.position, wayPoints[currentIndex].position) < 0.02f * movement2D.MoveSpeed)
             {
-                //´ÙÀ½ ÀÌµ¿¹æÇâ ¼³Á¤
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 NextMoveTo();
             }
 
@@ -51,29 +55,31 @@ public class Enemy : MonoBehaviour
 
     private void NextMoveTo()
     {
-        // ¾ÆÁ÷ ÀÌµ¿ÇÒ wayPoints°¡ ³²¾ÆÀÖ´Ù¸é
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ wayPointsï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´Ù¸ï¿½
         if (currentIndex < wayPointCount - 1)
         {
-            //ÀûÀÇ À§Ä¡¸¦ Á¤È®ÇÏ°Ô ¸ñÇ¥À§Ä¡·Î ¼³Á¤
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½È®ï¿½Ï°ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             transform.position = wayPoints[currentIndex].position;
-            //ÀÌµ¿ ¹æÇâ ¼³Á¤ => ´ÙÀ½ ¸ñÇ¥ÁöÁ¡(wayPoints)
+            //ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½(wayPoints)
             currentIndex++;
             Vector3 direction = (wayPoints[currentIndex].position-transform.position).normalized;
             movement2D.MoveTo(direction);
         }
-        // ÇöÀç À§Ä¡°¡ ¸¶Áö¸· wayPoints¶ó¸é
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ wayPointsï¿½ï¿½ï¿½
         else
         {
-            //Àû ¿ÀºêÁ§Æ® »èÁ¦
+            //ëª©í‘œ ì§€ì ì— ë„ë‹¬í•´ì„œ ì‚¬ë§í•  ë•ŒëŠ” ëˆì„ ì£¼ì§€ ì•Šë„ë¡
+            gold = 0;
+            //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
             //Destroy(gameObject);
-            OnDie();
+            OnDie(EnemyDestroyType.Arrive);
         }
     }
 
-    public void OnDie()
+    public void OnDie(EnemyDestroyType type)
     {
-        // EnemySpawner¿¡¼­ ¸®½ºÆ®·Î Àû Á¤º¸¸¦ °ü¸®ÇÏ±â ¶§¹®¿¡ Destory()¸¦ Á÷Á¢ÇÏÁö ¾Ê°í
-        // EnemySpawner¿¡¼­ º»ÀÎÀÌ »èÁ¦µÉ ¶§ ÇÊ¿äÇÑ Ã³¸®¸¦ ÇÏµµ·Ï DestoryEnemy() ÇÔ¼ö È£Ãâ
-        enemySpawner.DestroyEnemy(this);
+        // EnemySpawnerï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Destory()ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½
+        // EnemySpawnerï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ïµï¿½ï¿½ï¿½ DestoryEnemy() ï¿½Ô¼ï¿½ È£ï¿½ï¿½
+        enemySpawner.DestroyEnemy(type, this, gold);
     }
 }

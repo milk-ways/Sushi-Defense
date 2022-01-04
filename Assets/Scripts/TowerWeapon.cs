@@ -7,32 +7,34 @@ public enum WeaponState { SearchTarget = 0, AttackToTarget }
 public class TowerWeapon : MonoBehaviour
 {
     [SerializeField]
-    private GameObject projectilePrefab; //¹ß»çÃ¼ ÇÁ¸®Æé
+    private GameObject projectilePrefab; //ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
-    private Transform spawnPoint; //¹ß»çÃ¼ »ý¼º À§Ä¡
+    private Transform spawnPoint; //ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
     [SerializeField]
-    private float attackRate = 0.5f; //°ø°Ý¼Óµµ
+    private float attackRate = 0.5f; //ï¿½ï¿½ï¿½Ý¼Óµï¿½
     [SerializeField]
-    public float attackRange = 2.0f; //°ø°Ý ¹üÀ§
-    private WeaponState weaponState = WeaponState.SearchTarget; //Å¸¿ö¹«±âÀÇ »óÅÂ
-    private Transform attackTarget = null; //°ø°Ý ´ë»ó
-    private EnemySpawner enemySpawner; // °ÔÀÓ¿¡ Á¸ÀçÇÏ´Â Àû Á¤º¸ È¹µæ¿ë
+    private float attackRange = 2.0f; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [SerializeField]
+    private int attakDamage = 1; //ê³µê²©ë ¥
+    private WeaponState weaponState = WeaponState.SearchTarget; //Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private Transform attackTarget = null; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    private EnemySpawner enemySpawner; // ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¹ï¿½ï¿½ï¿½
 
     public void Setup(EnemySpawner enemySpawner)
     {
         this.enemySpawner = enemySpawner;
 
-        // ÃÖÃÊ »óÅÂ¸¦ WeaponState.SearchTargetÀ¸·Î ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ WeaponState.SearchTargetï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         ChangeState(WeaponState.SearchTarget);
     }
 
     public void ChangeState(WeaponState newState)
     {
-        // ÀÌÀü¿¡ Àç»ýÁßÀÌ´ø »óÅÂ Á¾·á
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         StopCoroutine(weaponState.ToString());
-        // »óÅÂ º¯°æ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         weaponState = newState;
-        // »õ·Î¿î »óÅÂ Àç»ý
+        // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         StartCoroutine(weaponState.ToString());
     }
 
@@ -46,13 +48,13 @@ public class TowerWeapon : MonoBehaviour
 
     private void RotateToTarget()
     {
-        // ¿øÁ¡À¸·ÎºÎÅÍÀÇ °Å¸®¿Í ¼öÆòÃàÀ¸·ÎºÎÅÍÀÇ °¢µµ¸¦ ÀÌ¿ëÇØ À§Ä¡¸¦ ±¸ÇÏ´Â ±Ø ÁÂÇ¥°è ÀÌ¿ë
-        // °¢µµ = arctan(y/x)
-        // x, y º¯À§°ª ±¸ÇÏ±â
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Ì¿ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ = arctan(y/x)
+        // x, y ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½
         float dx = attackTarget.position.x - transform.position.x;
         float dy = attackTarget.position.y - transform.position.y;
-        // x, y º¯À§°ªÀ» ¹ÙÅÁÀ¸·Î °¢µµ ±¸ÇÏ±â
-        // °¢µµ°¡ radian ´ÜÀ§±â ¶§¹®¿¡ Mathf.Rad2Deg¸¦ °öÇØ µµ ´ÜÀ§¸¦ ±¸ÇÔ
+        // x, y ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ radian ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Mathf.Rad2Degï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         float degree = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, degree);
     }
@@ -61,13 +63,13 @@ public class TowerWeapon : MonoBehaviour
     {
         while (true)
         {
-            // Á¦ÀÏ °¡±îÀÌ ÀÖ´Â ÀûÀ» Ã£±â À§ÇØ ÃÖÃÊ °Å¸®¸£ ÃÖ´ëÇÑ Å©°Ô ¼³Á¤
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             float closeDistSqr = Mathf.Infinity;
-            // EnemySpawnerÀÇ EnemyList¿¡ ÇöÀç ¸Ê¿¡ Á¸ÀçÇÏ´Â ¸ðµç Àû °Ë»ç
+            // EnemySpawnerï¿½ï¿½ EnemyListï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ë»ï¿½
             for (int i = 0; i < enemySpawner.EnemyList.Count; ++i)
             {
                 float distance = Vector3.Distance(enemySpawner.EnemyList[i].transform.position, transform.position);
-                // ÇöÀç °Ë»çÁßÀÎ Àû°úÀÇ °Å¸®°¡ °ø°Ý¹üÀ§ ³»¿¡ ÀÖ°í, ÇöÀç±îÁö °Ë»çÇÑ Àûº¸´Ù °Å¸®°¡ °¡±î¿ì¸é
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (distance <= attackRange && distance <= closeDistSqr)
                 {
                     closeDistSqr = distance;
@@ -88,14 +90,14 @@ public class TowerWeapon : MonoBehaviour
     {
         while (true)
         {
-            // 1. targetÀÌ ÀÖ´ÂÁö °Ë»ç (´Ù¸¥ ¹ß»çÃ¼¿¡ ÀÇÇÑ Á¦°Å, Goal ÁöÁ¡±îÁö ÀÌµ¿ÇØ »èÁ¦ µî)
+            // 1. targetï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ (ï¿½Ù¸ï¿½ ï¿½ß»ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, Goal ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)
             if (attackTarget == null)
             {
                 ChangeState(WeaponState.SearchTarget);
                 break;
             }
 
-            // 2. targetÀÌ °ø°Ý¹üÀ§ ¾È¿¡ ÀÖ´ÂÁö °Ë»ç (°ø°Ý ¹üÀ§¸¦ ¹þ¾î³ª¸é »õ·Î¿î Àû Å½»ö)
+            // 2. targetï¿½ï¿½ ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ ï¿½È¿ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³ªï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ Å½ï¿½ï¿½)
             float distance = Vector3.Distance(attackTarget.position, transform.position);
             if (distance > attackRange)
             {
@@ -104,10 +106,10 @@ public class TowerWeapon : MonoBehaviour
                 break;
             }
 
-            // 3. attackRate ½Ã°£¸¸Å­ ´ë±â
+            // 3. attackRate ï¿½Ã°ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½
             yield return new WaitForSeconds(attackRate);
 
-            // 4. °ø°Ý(¹ß»çÃ¼ »ý¼º)
+            // 4. ï¿½ï¿½ï¿½ï¿½(ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½)
             SpawnProjectile();
         }
     }
@@ -115,7 +117,7 @@ public class TowerWeapon : MonoBehaviour
     private void SpawnProjectile()
     {
         GameObject clone = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
-        // »ý¼ºµÈ ¹ß»çÃ¼¿¡°Ô °ø°Ý´ë»ó(attackTarget) Á¤º¸ Á¦°ø
-        clone.GetComponent<Projectile>().Setup(attackTarget);
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý´ï¿½ï¿½(attackTarget) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        clone.GetComponent<Projectile>().Setup(attackTarget, attakDamage);
     }
 }

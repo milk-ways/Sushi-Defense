@@ -7,27 +7,28 @@ public class Projectile : MonoBehaviour
     private Movement2D movement2D;
     private Transform target;
 
-    public void Setup(Transform target)
+    public void Setup(Transform target, int damage)
     {
         movement2D = GetComponent<Movement2D>();
-        this.target = target;   // Å¸¿ö°¡ ¼³Á¤ÇØÁØ target
+        this.target = target;   // Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ target
+        this.damage = damage;   // íƒ€ì›Œê°€ ì„¤ì •í•´ì¤€ ê³µê²©ë ¥
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (target != null) // targetÀÌ Á¸ÀçÇÏ¸é
+        if (target != null) // targetï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
         {
-            // ¹ß»çÃ¼¸¦ targetÀÇ À§Ä¡·Î ÀÌµ¿
+            // ï¿½ß»ï¿½Ã¼ï¿½ï¿½ targetï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
             Vector3 direction = (target.position - transform.position).normalized;
             movement2D.MoveTo(direction);
         }
-        else  // ¿©·¯ ÀÌÀ¯·Î targetÀÌ »ç¶óÁö¸é
+        else  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ targetï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            // ¹ß»çÃ¼ ¿ÀºêÁ§Æ® »èÁ¦
+            // ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
             Destroy(gameObject);
         }
-        if (movement2D.distance >= 2) // ÀÏÁ¤°Å¸® ÀÌ»ó °¬À» ¶§ »èÁ¦ (ÀÌ°Å ³ªÁß¿¡ Å¸¿ö »çÁ¤°Å¸®·Î ¼öÁ¤)
+        if (movement2D.distance >= 2) // ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         {
             Destroy(gameObject);
         }
@@ -35,10 +36,11 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy")) return;  //ÀûÀÌ ¾Æ´Ñ ´ë»ó°ú ºÎµúÈ÷¸é
-        if (collision.transform != target) return;   //ÇöÀç targetÀÎ ÀûÀÌ ¾Æ´Ò ¶§
+        if (!collision.CompareTag("Enemy")) return;  //ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½
+        if (collision.transform != target) return;   //ï¿½ï¿½ï¿½ï¿½ targetï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½
 
-        collision.GetComponent<Enemy>().OnDie();     //Àû »ç¸Á ÇÔ¼ö È£Ãâ
-        Destroy(gameObject);                         //¹ß»çÃ¼ ¿ÀºêÁ§Æ® »èÁ¦
+        //collision.GetComponent<Enemy>().OnDie();     //ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½
+        collision.GetComponent<EnemyHP>().TakeDamage(damage); //ì  ì²´ë ¥ì„ damageë§Œí¼ ê°ì†Œ
+        Destroy(gameObject);                         //ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
     }
 }

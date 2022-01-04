@@ -7,24 +7,36 @@ public class TowerSpawner : MonoBehaviour
     [SerializeField]
     private GameObject towerPrefab;
     [SerializeField]
-    private EnemySpawner enemySpawner; // ÇöÀç ¸Ê¿¡ Á¸ÀçÇÑ´Â Àû ¸®½ºÆ® Á¤º¸ È¹µæ
+    private int towerBuildGold = 50;  // íƒ€ì›Œ ê±´ì„¤ì— ì‚¬ìš©ë˜ëŠ” ê³¨ë“œ
+    [SerializeField]
+    private EnemySpawner enemySpawner; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ È¹ï¿½ï¿½
+    [SerializeField]
+    private PlayerGold playerGold;  // íƒ€ì›Œ ê±´ì„¤ ì‹œ ê³¨ë“œ ê°ì†Œë¥¼ ìœ„í•´
 
     public void SpawnTower(Transform tileTransform)
     {
+        //íƒ€ì›Œë¥¼ ê±´ì„¤í•œ ë§Œí¼ ëˆì´ ì—†ìœ¼ë©´ íƒ€ì›Œ ê±´ì„¤ X
+        if ( towerBuildGold > playerGold.CurrentGold )
+        {
+            return;
+        }
+
         Tile tile = tileTransform.GetComponent<Tile>();
 
-        // Å¸¿ö °Ç¼³ °¡´É ¿©ºÎ È®ÀÎ
-        // 1. ÇöÀç Å¸ÀÏÀÇ À§Ä¡¿¡ ÀÌ¹Ì Å¸¿ö°¡ °Ç¼³µÇ¾î ÀÖÀ¸¸é Å¸¿ö °Ç¼³ X
+        // Å¸ï¿½ï¿½ ï¿½Ç¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+        // 1. ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ì¹ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¼ï¿½ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½Ç¼ï¿½ X
         if (tile.IsBuildTower == true)
         {
             return;
         }
 
-        // Å¸¿ö°¡ °Ç¼³µÇ¾î ÀÖÀ½À¸·Î ¼³Á¤
+        // Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¼ï¿½ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         tile.IsBuildTower = true;
-        // ¼±ÅÃÇÑ Å¸ÀÏÀÇ À§Ä¡¿¡ Å¸¿ö °Ç¼³
+        // íƒ€ì›Œ ê±´ì„¤ì— í•„ìš”í•œ ê³¨ë“œë§Œí¼ ê°ì†Œ
+        playerGold.CurrentGold -= towerBuildGold;
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½Ç¼ï¿½
         GameObject clone = Instantiate(towerPrefab, tileTransform.position, Quaternion.identity);
-        // Å¸¿ö ¹«±â¿¡ enemySpawner Á¤º¸ Àü´Ş
+        // Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½â¿¡ enemySpawner ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         clone.GetComponent<TowerWeapon>().Setup(enemySpawner);
     }
 }
