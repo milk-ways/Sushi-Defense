@@ -6,8 +6,9 @@ public class Projectile : MonoBehaviour
 {
     private Movement2D movement2D;
     private Transform target;
+    private float damage;
 
-    public void Setup(Transform target, int damage)
+    public void Setup(Transform target, float damage)
     {
         movement2D = GetComponent<Movement2D>();
         this.target = target;   // Ÿ���� �������� target
