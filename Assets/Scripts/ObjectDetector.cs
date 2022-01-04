@@ -6,6 +6,8 @@ public class ObjectDetector : MonoBehaviour
 {
     [SerializeField]
     private TowerSpawner towerSpawner;
+    [SerializeField]
+    private TowerDataViewer towerDataViewer;
 
     private Camera mainCamera;
     private Ray ray;
@@ -13,27 +15,35 @@ public class ObjectDetector : MonoBehaviour
 
     private void Awake()
     {
-        // "MainCamera" ÅÂ±×¸¦ °¡Áö°í ÀÖ´Â ¿ÀºêÁ§Æ® Å½»ö ÈÄ Camera ÄÄÆ÷³ÍÆ® Á¤º¸ Àü´Ş
-        // GameObject.FindGameOjbectWithTag("MainCamera").GetComponent<Camera>();¿Í µ¿ÀÏ
+        // "MainCamera" ï¿½Â±×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Å½ï¿½ï¿½ ï¿½ï¿½ Camera ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // GameObject.FindGameOjbectWithTag("MainCamera").GetComponent<Camera>();ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         mainCamera = Camera.main;
     }
 
     private void Update()
     {
-        // ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´­·¶À» ¶§
+        // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         if (Input.GetMouseButtonDown(0))
         {
-            // Ä«¸Ş¶ó À§Ä¡¿¡¼­ È­¸éÀÇ ¸¶¿ì½º À§Ä¡¸¦ °üÅëÇÏ´Â ±¤¼± »ı¼º
-            // ray.origin : ±¤¼±ÀÇ ½ÃÀÛÀ§Ä¡(=Ä«¸Ş¶óÀ§Ä¡)
-            // ray.direction : ±¤¼±ÀÇ ÁøÇà¹æÇâ
+            // Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // ray.origin : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡(=Ä«ï¿½Ş¶ï¿½ï¿½ï¿½Ä¡)
+            // ray.direction : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-            // 2D ¸ğ´ÏÅÍ¸¦ ÅëÇØ 3D ¿ùµåÀÇ ¿ÀºêÁ§Æ®¸¦ ¸¶¿ì½º·Î ¼±ÅÃÇÏ´Â ¹æ¹ı
-            // ±¤¼±¿¡ ºÎµúÈ÷´Â ¿ÀºêÁ§Æ®¸£ °ËÃâÇØ¼­ hit¿¡ ÀúÀå
+            // 2D ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ 3D ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ hitï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                // Å¸¿ö¸¦ »ı¼ºÇÏ´Â SpawnTower() È£Ãâ
-                towerSpawner.SpawnTower(hit.transform);
+                // Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ SpawnTower() È£ï¿½ï¿½
+                if ( hit.transform.CompareTag("Tile") )
+                {
+                    towerSpawner.SpawnTower(hit.transform);
+                }
+                // íƒ€ì›Œë¥¼ ì„ íƒí•˜ë©´ í•´ë‹¹ íƒ€ì›Œ ì •ë³´ë¥¼ ì¶œë ¥í•˜ëŠ” íƒ€ì›Œ ì •ë³´ì°½ On
+                else if ( hit.transform.CompareTag("Tower"))
+                {
+                    towerDataViewer.OnPanel(hit.transform);
+                }
             }
         }
     }

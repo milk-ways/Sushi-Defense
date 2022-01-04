@@ -16,9 +16,15 @@ public class TowerWeapon : MonoBehaviour
     private float attackRange = 2.0f; //���� ����
     [SerializeField]
     private int attakDamage = 1; //공격력
+    private int level = 0; //타워 레벨
     private WeaponState weaponState = WeaponState.SearchTarget; //Ÿ�������� ����
     private Transform attackTarget = null; //���� ���
     private EnemySpawner enemySpawner; // ���ӿ� �����ϴ� �� ���� ȹ���
+
+    public float Damage => attakDamage;
+    public float Rate => attackRate;
+    public float Range => attackRange;
+    public int Level => level + 1;
 
     public void Setup(EnemySpawner enemySpawner)
     {
