@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6276789674084646597}
   - component: {fileID: 7453184279574950899}
   - component: {fileID: 7691642208523744880}
+  - component: {fileID: -2158256787211449299}
   m_Layer: 0
   m_Name: Enemy01
   m_TagString: Enemy
@@ -97,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 671a2c8a4ea191d4ab91f3d4cca64552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gold: 10
 --- !u!114 &7453184279574950899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,8 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60dd50c34d9077549ab18de0702debb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 1
   moveDirection: {x: 0, y: 0, z: 0}
+  distance: 0
 --- !u!58 &7691642208523744880
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -127,3 +130,16 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &-2158256787211449299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683642307602905172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40e3808133807c42a40cff2cfaa8df6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 5

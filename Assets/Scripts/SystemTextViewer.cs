@@ -5,7 +5,7 @@ using TMPro;
 
 public enum SystemType { Money= 0, Build}
 
-public class SystemType : MonoBehaviour
+public class SystemTextViewer : MonoBehaviour
 {
     private TextMeshProUGUI textSystem;
     private TMPAlpha tmpAlpha;

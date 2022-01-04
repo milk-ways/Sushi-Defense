@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHP : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class PlayerHP : MonoBehaviour
         currentHP -= damage;
         
         StopCoroutine("HitAlphaAnimation");
-        StartCoroutine("HitAlphaAnimation")
+        StartCoroutine("HitAlphaAnimation");
         // 체력이 0이 되면 게임오버
         if (currentHP <= 0)
         {
@@ -43,7 +44,7 @@ public class PlayerHP : MonoBehaviour
         while ( color.a >= 0.0f )
         {
             color.a -= Time.deltaTime;
-            imageScreen.color = color
+            imageScreen.color = color;
 
             yield return null;
         }

@@ -67,7 +67,7 @@ public class TowerDataViewer : MonoBehaviour
         textLevel.text = "Level : " + currentTower.Level;
 
         // 업그레이드가 불가능해지면 버튼 비활성화
-        buttonUpgrade.interactable = currentTower.Level < currentTower.MaxLevel ? true : false
+        buttonUpgrade.interactable = currentTower.Level < currentTower.MaxLevel ? true : false; 
     }
 
     public void OnClickEventTowerUpgrade()

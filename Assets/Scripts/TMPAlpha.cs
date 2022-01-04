@@ -27,7 +27,7 @@ public class TMPAlpha : MonoBehaviour
         while(percent < 1)
         {
             // lerpTime 시간동안 while() 반복문 실행
-            currentTower += Time.deltaTime;
+            currentTime += Time.deltaTime;
             percent = currentTime / lerpTime;
 
             // Text - TextMeshPro의 폰트 투명도를 start에서 end로 변경

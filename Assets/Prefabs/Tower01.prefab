@@ -41,9 +41,10 @@ GameObject:
   - component: {fileID: 9090981482797374414}
   - component: {fileID: 5528408136680706612}
   - component: {fileID: 7918214935276784982}
+  - component: {fileID: 7101680682286263324}
   m_Layer: 0
   m_Name: Tower01
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,7 +127,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 409fb937662e76247b0528706bf981e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerTemplate: {fileID: 11400000, guid: e989fc0d93dff974ea0dd99480955f79, type: 2}
   projectilePrefab: {fileID: 347483431056038346, guid: 1d175ad1da0bf3f4eb9cb4493face4fe, type: 3}
   spawnPoint: {fileID: 3808386241546391457}
-  attackRate: 0.5
-  attackRange: 2
+--- !u!65 &7101680682286263324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184189790713521438}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.88, y: 0.59, z: 0.2}
+  m_Center: {x: 0.14959997, y: 0, z: 0}
