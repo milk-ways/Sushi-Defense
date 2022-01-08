@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SliderPositionAutoSetter : MonoBehaviour
 {
-    [SerializeField]
-    private Vector3 distance = Vector3.down * 20.0f;
+    //[SerializeField]
+    //private Vector3 distance = Vecto;
     private Transform targetTransform;
     private RectTransform rectTransform;
 
@@ -31,6 +31,6 @@ public class SliderPositionAutoSetter : MonoBehaviour
         // 오브젝트의 필드 좌표를 기준으로 화면에서의 좌표 값을 구함
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(targetTransform.position);
         // 화면내에서 좌표 + distance만큼 떨어진 위치를 Slider UI의 위치로 설정
-        rectTransform.position = screenPosition + distance;
+        rectTransform.position = screenPosition;     //+ distance;
     }
 }

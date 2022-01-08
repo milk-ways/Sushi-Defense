@@ -6,27 +6,26 @@ public class Projectile : MonoBehaviour
 {
     private Movement2D movement2D;
     private Transform target;
-    private float damage;
+    private int damage;
 
-    public void Setup(Transform target, float damage)
+    public void Setup(Transform target,int damage)
     {
         movement2D = GetComponent<Movement2D>();
-        this.target = target;   // Ÿ���� �������� target
-        this.damage = damage;   // 타워가 설정해준 공격력
+        this.target = target;   // 타워가 설정해준 target
+        this.damage = damage; // 타워가 설정해준 공격력
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        if (target != null) // target�� �����ϸ�
+        if (target != null) // target이 존재하면
         {
-            // �߻�ü�� target�� ��ġ�� �̵�
+            // 발사체를 target의 위치로 이동
             Vector3 direction = (target.position - transform.position).normalized;
             movement2D.MoveTo(direction);
         }
-        else  // ���� ������ target�� �������
+        else  // 여러 이유로 target이 사라지면
         {
-            // �߻�ü ������Ʈ ����
+            // 발사체 오브젝트 삭제
             Destroy(gameObject);
         }
         if (movement2D.distance >= 2) // �����Ÿ� �̻� ���� �� ���� (�̰� ���߿� Ÿ�� �����Ÿ��� ����)
@@ -37,11 +36,10 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy")) return;  //���� �ƴ� ���� �ε�����
-        if (collision.transform != target) return;   //���� target�� ���� �ƴ� ��
+        if (!collision.CompareTag("Enemy")) return;  // 적이 아닌 대상과 부딪히면
+        if (collision.transform != target) return;   // 현재 target이 적이 아닐 때
 
-        //collision.GetComponent<Enemy>().OnDie();     //�� ��� �Լ� ȣ��
-        collision.GetComponent<EnemyHP>().TakeDamage(damage); //적 체력을 damage만큼 감소
-        Destroy(gameObject);                         //�߻�ü ������Ʈ ����
+        collision.GetComponent<EnemyHP>().TakeDamage(damage); // 적 체력을 damage만큼 감소
+        Destroy(gameObject);                         // 발사체 오브젝트 삭제
     }
 }
