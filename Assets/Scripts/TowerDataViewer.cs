@@ -13,8 +13,6 @@ public class TowerDataViewer : MonoBehaviour
     private TextMeshProUGUI textDamage;
     [SerializeField]
     private TextMeshProUGUI textRate;
-    //[SerializeField]
-    //private TextMeshProUGUI textRange;
     [SerializeField]
     private TextMeshProUGUI textLevel;
     [SerializeField]

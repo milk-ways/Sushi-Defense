@@ -9,6 +9,10 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
     private TowerSpawner towerSpawner;
     [SerializeField]
     private TowerDataViewer towerDataViewer;
+    [SerializeField]
+    private int towerBuyGold = 50; // 타워 구매에 사용되는 골드
+    [SerializeField]
+    private PlayerGold playerGold; // 타워 구매시 골드 감소를 위해
 
     private Vector3 previousPosition;
     private GameObject hitGameObject; 
@@ -44,6 +48,17 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
                     spriteRenderer = hitGameObject.GetComponent<SpriteRenderer>();
                     color = spriteRenderer.color;
                     //towerDataViewer.OnPanel();
+                }
+                else if (hit.transform.CompareTag("TowerBelt"))
+                {
+                    // 타워를 살 만큼 돈이 없으면 타워 건설 X
+                    if (towerBuyGold > playerGold.CurrentGold)
+                    {
+                        return;
+                    }
+                    Destroy(hit.transform.gameObject);
+                    // 타워 구매에 필요한 골드만큼 감소
+                    playerGold.CurrentGold -= towerBuyGold;
                 }
             }
         }
