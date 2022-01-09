@@ -7,9 +7,13 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
 {
     [SerializeField]
     private TowerSpawner towerSpawner;
+    [SerializeField]
+    private TowerDataViewer towerDataViewer;
 
     private Vector3 previousPosition;
+    private GameObject hitGameObject; 
     private SpriteRenderer spriteRenderer;
+    private Color color;
 
     private bool isDragging;
 
@@ -22,66 +26,71 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
         // "MainCamera" 태그를 가지고 있는 오브젝트 탐색후 Camera 컴포넌트 정보 전달
         // GameObject.FindGameOjbectWithTag("MainCamera").GetComponent<Camera>();�� ����
         mainCamera = Camera.main;
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    /*private void Update()
-    {
-        // 마우스 왼쪽 버튼을 눌렀을 때
-        if (Input.GetMouseButtonDown(0))
-        {
-            // 카메라 위치에서 화면의 마우스 위치를 관통하는 광선 생성
-            // ray.origin : 광선의 시작위치(=카메라 위치)
-            // ray.direction : 광선의 진행방향
-            ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            // 2D 모니터를 통해 3D월드의 오브젝트를 마우스로 선택하는 방법
-            // 광선에 부딪히는 오브젝트 hit에 저장
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                // 광선에 부딪힌 오브젝트의 태그가 "Tile"이면
-                if (hit.transform.CompareTag("Tile"))
-                {
-                    // 타워를 생성하는 SpawnTower() 호출
-                    towerSpawner.SpawnTower(hit.transform);
-                }
-            }
-        }
-    }*/
-    /*public void OnBeginDrag(PointerEventData eventData)
-    {
-        // 드래그 직전에 있던 위치 정보 저장
-        previousPosition = transform.position;
-
-        // 오브젝트의 투명도 조절
-        Color color = spriteRenderer.color;
-        color.a = 0.6f;
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        // 현재 스크린상의 마우스 위치를 오브젝트 위치로 설정
-        transform.position = eventData.position;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
+    private void Update()
     {
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        // 2D 모니터를 통해 3D월드의 오브젝트를 마우스로 선택하는 방법
-        // 광선에 부딪히는 오브젝트 hit에 저장
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if (Input.GetMouseButtonDown(0))
         {
-            // 광선에 부딪힌 오브젝트의 태그가 "Tile"이 아니면
-            if (!(hit.transform.CompareTag("Tile")))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                transform.position = previousPosition;
-                Color color = spriteRenderer.color;
-                color.a = 1.0f;
+                if ((hit.transform.CompareTag("TowerUI")))
+                {
+                    isDragging = true;
+                    hitGameObject = hit.transform.gameObject;
+                    previousPosition = hit.transform.position;
+                    spriteRenderer = hitGameObject.GetComponent<SpriteRenderer>();
+                    color = spriteRenderer.color;
+                    //towerDataViewer.OnPanel();
+                }
             }
         }
-    }*/
-    
+        if (isDragging)
+        {
+            color.a = 0.3f;
+            spriteRenderer.color = color;
+            Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition) - hitGameObject.transform.position;
+            hitGameObject.transform.Translate(mousePosition,.0f);
+            if (Input.GetMouseButtonUp(0))
+            {
+                isDragging = false;
+
+                // 2D 모니터를 통해 3D월드의 오브젝트를 마우스로 선택하는 방법
+                // 광선에 부딪히는 오브젝트 hit에 저장
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    // 광선에 부딪힌 오브젝트의 태그가 "Tile"이 아니면
+                    if (!(hit.transform.CompareTag("Tile")))
+                    {
+                        hitGameObject.transform.position = previousPosition;
+                    }
+                    else
+                    {
+                        Destroy(hitGameObject);
+                        towerSpawner.SpawnTower(hit.transform);
+                        towerDataViewer.OffPanel();
+                    }
+                }
+            }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.transform.CompareTag("Tower"))
+                {
+                    towerDataViewer.OnPanel(hit.transform);
+                }
+                else
+                {
+                    towerDataViewer.OffPanel();
+                }
+            }
+        }
+    }
+    /*
     public void OnMouseDown()
     {
         isDragging = true;
@@ -120,5 +129,5 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
         }
         color.a = 1.0f;
         spriteRenderer.color = color;
-    }
+    }*/
 }
