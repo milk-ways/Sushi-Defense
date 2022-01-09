@@ -12,6 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e10dcc03ce9663499f5fa8fb80021c7, type: 3}
   m_Name: Tower01
   m_EditorClassIdentifier: 
-  towerPrefab: {fileID: 0}
-  followTowerPrefab: {fileID: 0}
-  weapon: []
+  towerPrefab: {fileID: 7383991127114778128, guid: 5f3c8f67df105994ea8b0915bed125eb, type: 3}
+  weapon:
+  - sprite: {fileID: 21300000, guid: dde7d46de16227b43add40e6f123838f, type: 3}
+    damage: 1
+    rate: 0.1
+    range: 2
+  - sprite: {fileID: 21300000, guid: c5a6d2a39345d074797920db21d83b17, type: 3}
+    damage: 0
+    rate: 0
+    range: 0
+  - sprite: {fileID: 21300000, guid: 25204dfb80c71cf45a6c5204e48eb9c5, type: 3}
+    damage: 0
+    rate: 0
+    range: 0

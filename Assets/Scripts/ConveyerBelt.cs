@@ -8,7 +8,10 @@ public class ConveyerBelt : MonoBehaviour
 
     private void Update()
     {
-        transform.position += speed * (new Vector3(0.1f, 0, 0));
-        if (transform.position.x > 7.5f) Destroy(gameObject);
+        if (transform.CompareTag("TowerBelt"))
+        {
+            transform.position += speed * (new Vector3(0.1f, 0, 0));
+            if (transform.position.x > 7.5f) Destroy(gameObject);
+        }
     }
 }

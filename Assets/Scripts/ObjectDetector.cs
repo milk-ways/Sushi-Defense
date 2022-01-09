@@ -47,7 +47,7 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
                     previousPosition = hit.transform.position;
                     spriteRenderer = hitGameObject.GetComponent<SpriteRenderer>();
                     color = spriteRenderer.color;
-                    //towerDataViewer.OnPanel();
+                    towerDataViewer.OnPanel(hit.transform);
                 }
                 else if (hit.transform.CompareTag("TowerBelt"))
                 {
@@ -56,7 +56,7 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
                     {
                         return;
                     }
-                    Destroy(hit.transform.gameObject);
+                    hit.transform.gameObject.tag = "TowerUI";
                     // 타워 구매에 필요한 골드만큼 감소
                     playerGold.CurrentGold -= towerBuyGold;
                 }
@@ -80,6 +80,9 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
                     if (!(hit.transform.CompareTag("Tile")))
                     {
                         hitGameObject.transform.position = previousPosition;
+                        towerDataViewer.OffPanel();
+                        color.a = 1f;
+                        spriteRenderer.color = color;
                     }
                     else
                     {
@@ -105,44 +108,4 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
             }
         }
     }
-    /*
-    public void OnMouseDown()
-    {
-        isDragging = true;
-        previousPosition = transform.position;
-    }
-    public void OnMouseUp()
-    {
-        isDragging = false;
-        ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-        // 2D 모니터를 통해 3D월드의 오브젝트를 마우스로 선택하는 방법
-        // 광선에 부딪히는 오브젝트 hit에 저장
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        {
-            // 광선에 부딪힌 오브젝트의 태그가 "Tile"이 아니면
-            if (!(hit.transform.CompareTag("Tile")))
-            {
-                transform.position = previousPosition;
-            }
-            else
-            {
-                Destroy(gameObject);
-                towerSpawner.SpawnTower(hit.transform);
-            }
-        }
-
-    }
-    private void Update()
-    {
-        Color color = spriteRenderer.color;
-        if (isDragging) {
-            color.a = 0.1f;
-            spriteRenderer.color = color;
-            Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            transform.Translate(mousePosition, .0f);
-        }
-        color.a = 1.0f;
-        spriteRenderer.color = color;
-    }*/
 }

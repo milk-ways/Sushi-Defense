@@ -5,7 +5,9 @@ using UnityEngine;
 public class TowerSpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject towerPrefab;
+    private TowerTemplate towerTemplate; // 타워 정보 (공격력, 공격속도 등)
+    //[SerializeField]
+    //private GameObject towerPrefab;
     //[SerializeField]
     //private int towerBuildGold = 50; // 타워 건설에 사용되는 골드
     [SerializeField]
@@ -35,8 +37,9 @@ public class TowerSpawner : MonoBehaviour
         // 타워 건설에 필요한 골드만큼 감소
         //playerGold.CurrentGold -= towerBuildGold;
         // 선택한 타일의 위치에 타워 건설 (타일보다 z축 -1의 위치에 배치 왜냐하면 먼저 선택되도록)
-        GameObject clone = Instantiate(towerPrefab, tileTransform.position+Vector3.back, Quaternion.identity);
+        GameObject clone = Instantiate(towerTemplate.towerPrefab, tileTransform.position+Vector3.back, Quaternion.identity);
+        clone.tag = "Tower";
         // 타워 무기에 enemySpawner 정보 전달
-        clone.GetComponent<TowerWeapon>().Setup(enemySpawner);
+        clone.GetComponent<TowerWeapon>().Setup(enemySpawner, tile);
     }
 }

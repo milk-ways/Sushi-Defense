@@ -50,8 +50,16 @@ public class TowerDataViewer : MonoBehaviour
         gameObject.SetActive(true);
         // 타워 정보를 갱신
         UpdateTowerData();
-        // 타워 오브젝트 주변에 표시되는 타워 공격범위 Sprite On
-        towerAttackRange.OnAttackRange(currentTower.transform.position, currentTower.Range);
+        if (towerWeapon.CompareTag("Tower"))
+        {
+            // 타워 오브젝트 주변에 표시되는 타워 공격범위 Sprite On
+            towerAttackRange.OnAttackRange(currentTower.transform.position, currentTower.Range);
+        }
+        else if (towerWeapon.CompareTag("TowerUI"))
+        {
+            // 타워 오브젝트를 따라다니는 타워 공격범위 Sprite On
+            towerAttackRange.OnAttackRangeMove(currentTower.Range);
+        }
     }
 
     public void OffPanel()
@@ -82,11 +90,10 @@ public class TowerDataViewer : MonoBehaviour
             {
                 textDamage.text = "Buff : " + currentTower.Buff * 100 + "%";
             }
-        }
-        imageTower.sprite = currentTower.TowerSprite;*/
+        }*/
+        imageTower.sprite = currentTower.TowerSprite;
         textDamage.text = "Damage : " + currentTower.Damage;
         textRate.text = "Rate : " + currentTower.Rate;
-        //textRange.text = "Range : " + currentTower.Range;
         textLevel.text = "Level : " + currentTower.Level;
         //textUpgradeCost.text = currentTower.UpgradeCost.ToString();
         //textSellCost.text = currentTower.SellCost.ToString();
@@ -112,12 +119,12 @@ public class TowerDataViewer : MonoBehaviour
             systemTextViewer.PrintText(SystemType.Money);
         }
     }
-
+    */
     public void OnclickEventTowerSell()
     {
         // 타워 판매
         currentTower.Sell();
         // 선택한 타워가 사라져서 Panel, 공격범위 off
         OffPanel();
-    }*/
+    }
 }
