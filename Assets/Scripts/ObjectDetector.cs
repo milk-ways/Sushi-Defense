@@ -48,7 +48,7 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
                     previousPosition = hit.transform.position;
                     spriteRenderer = hitGameObject.GetComponent<SpriteRenderer>();
                     color = spriteRenderer.color;
-                    towerDataViewer.OnPanel(hit.transform);
+                    towerDataViewer.OnPanelLeft(hit.transform);
                 }
                 else if (hit.transform.CompareTag("TowerBelt"))
                 {
@@ -118,7 +118,11 @@ public class ObjectDetector : MonoBehaviour//, IBeginDragHandler, IDragHandler, 
             {
                 if (hit.transform.CompareTag("Tower"))
                 {
-                    towerDataViewer.OnPanel(hit.transform);
+                    towerDataViewer.OnPanelRight(hit.transform);
+                }
+                else if (hit.transform.CompareTag("TowerUI"))
+                {
+                    towerDataViewer.OnPanelRight(hit.transform);
                 }
                 else
                 {

@@ -42,7 +42,7 @@ public class TowerDataViewer : MonoBehaviour
         }
     }
 
-    public void OnPanel(Transform towerWeapon)
+    public void OnPanelLeft(Transform towerWeapon)
     {
         // 출력해야하는 타워 정보를 받아와서 저장
         currentTower = towerWeapon.GetComponent<TowerWeapon>();
@@ -60,6 +60,18 @@ public class TowerDataViewer : MonoBehaviour
             // 타워 오브젝트를 따라다니는 타워 공격범위 Sprite On
             towerAttackRange.OnAttackRangeMove(currentTower.Range);
         }
+    }
+    public void OnPanelRight(Transform towerWeapon)
+    {
+        // 출력해야하는 타워 정보를 받아와서 저장
+        currentTower = towerWeapon.GetComponent<TowerWeapon>();
+        // 타워 정보 Panel On
+        gameObject.SetActive(true);
+        // 타워 정보를 갱신
+        UpdateTowerData();
+
+        // 타워 오브젝트 주변에 표시되는 타워 공격범위 Sprite On
+        towerAttackRange.OnAttackRange(currentTower.transform.position, currentTower.Range);
     }
 
     public void OffPanel()
