@@ -9,7 +9,9 @@ public class TowerGenerator : MonoBehaviour
     [SerializeField]
     private GameObject spawnPoint;
     [SerializeField]
-    private float spawnTime; 
+    private float spawnTime;
+    [SerializeField]
+    private GameObject belt;
 
     private void Start()
     {
@@ -18,8 +20,10 @@ public class TowerGenerator : MonoBehaviour
 
     private IEnumerator towerSpawn()
     {
+        BeltUpgrade beltUpgrade = belt.GetComponent<BeltUpgrade>();
         while (true)
         {
+            spawnTime = beltUpgrade.spawnTime[beltUpgrade.speedLevel];
             Instantiate(towerTemplate.towerPrefab, spawnPoint.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(spawnTime);
         }
