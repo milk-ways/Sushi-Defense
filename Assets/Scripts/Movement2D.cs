@@ -11,7 +11,10 @@ public class Movement2D : MonoBehaviour
 
     public float distance = 0;
 
-    public float MoveSpeed => moveSpeed;
+    public float MoveSpeed{
+        set => moveSpeed = value;
+        get => moveSpeed;
+    }
 
     private void Update()
     {

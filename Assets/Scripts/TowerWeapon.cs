@@ -25,12 +25,23 @@ public class TowerWeapon : MonoBehaviour
     private SpriteRenderer spriteRenderer; // 타워 오브젝트 이미지 변경용
     private Tile ownerTile; // 현재 타워가 배치되어 있는 타일
 
+    public string TowerType => towerTemplate.weapon[level].towerType;
     public Sprite TowerSprite => towerTemplate.weapon[level].sprite;
     public float Range => towerTemplate.weapon[level].range;///attackRange;
     public float Damage => towerTemplate.weapon[level].damage;//attackDamage;
     public float Rate => towerTemplate.weapon[level].rate;//attackRate;
     public int Level => level + 1;
-    public int MaxLevel => towerTemplate.weapon.Length;
+    public int exp = 1;
+    public int xpforlv2 = 3;
+    public int xpforlv3 = 9;
+    
+    [Header("Laser")]
+    [SerializeField]
+    private LineRenderer lineRenderer; //레이저로 사용되는 선(LineRenderer)
+    [SerializeField]
+    private Transform hitEffect; //타격 효과
+    [SerializeField]
+    private LayerMask targetLayer; //광선에 부딪히는 레이어 설정
 
 
     public void Setup(EnemySpawner enemySpawner, Tile ownerTile)
@@ -131,9 +142,44 @@ public class TowerWeapon : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        GameObject clone = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
-        // 생성된 발사체에게 공격대상 정보 제공
-        clone.GetComponent<Projectile>().Setup(attackTarget, towerTemplate.weapon[level].damage);
+        if (TowerType == "Gun")
+        {
+            GameObject clone = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+            // 생성된 발사체에게 공격대상 정보 제공
+            clone.GetComponent<Bullet>().Setup(attackTarget, towerTemplate.weapon[level].damage);
+        }
+        else if (TowerType == "Slow")
+        {
+            GameObject clone = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+            // 생성된 발사체에게 공격대상 정보 제공
+            clone.GetComponent<SlowBullet>().Setup(attackTarget, towerTemplate.weapon[level].damage);
+
+        }
+        else if (TowerType == "Laser")
+        {
+
+            Vector3 direction = attackTarget.position - spawnPoint.position;
+            RaycastHit2D[] hit = Physics2D.RaycastAll(spawnPoint.position, direction, towerTemplate.weapon[level].range, targetLayer);
+
+            // 같은 방향으로 여러 개의 광선을 쏴서 그 중 현재 attakcTarget과 동일한 오브젝트를 검출
+            for (int i = 0; i < hit.Length; ++i)
+            {
+                if (hit[i].transform == attackTarget)
+                {
+                    // 선의 시작지점
+                    lineRenderer.SetPosition(0, spawnPoint.position);
+                    // 선의 목표지점
+                    lineRenderer.SetPosition(1, new Vector3(hit[i].point.x, hit[i].point.y, 0) + Vector3.back);
+                    // 타격 효과 위치 설정
+                    hitEffect.position = hit[i].point;
+                    // 적 체력 감소 (1초에 damage만큼 감소)
+                    //attackTarget.GetComponent<EnemyHP>().TakeDamage(towerTemplate.weapon[level].damage * Time.deltaTime);
+                    // 공격력 = 타워 기본 공격력 + 버프에 의해 추가된 공격력
+                    float damage = towerTemplate.weapon[level].damage;
+                    attackTarget.GetComponent<EnemyHP>().TakeDamage(damage * Time.deltaTime);
+                }
+            }
+        }
     }
 
     public void Sell()

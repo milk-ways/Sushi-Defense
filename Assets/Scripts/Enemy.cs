@@ -13,10 +13,13 @@ public class Enemy : MonoBehaviour
     private EnemySpawner enemySpawner; // 적의 삭제를 본인이 하지 않고 EnemySpaner에 알려서 삭제
     [SerializeField]
     private int gold = 10; // 적 사망 시 획득 가능한 골드
+    private float defaultSpeed;
+    private float slowRate = 1.0f;
 
     public void Setup(EnemySpawner enemySpawner, Transform[] wayPoints)
     {
         movement2D = GetComponent<Movement2D>();
+        defaultSpeed = movement2D.MoveSpeed;
         this.enemySpawner = enemySpawner;
 
         // 적 이동 경로 WayPoints 정보 설정
@@ -78,6 +81,24 @@ public class Enemy : MonoBehaviour
     {
         // EnemySpawner에서 리스트로 적 정보를 관리하기 때문에 Destroy()를 직접하지 않고
         // EnemySpawner에게 본이이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 함수 호출
-        enemySpawner.DestroyEnemy(type,this,gold);
+        enemySpawner.DestroyEnemy(type, this, gold);
+    }
+
+    public void GetSlow(float newslowRate)
+    {
+        if (newslowRate <= slowRate)
+        {
+            StopCoroutine("RecoverSlow");
+            slowRate = newslowRate;
+            movement2D.MoveSpeed = defaultSpeed * slowRate;
+            StartCoroutine("RecoverSlow");
+        }
+    }
+
+    private IEnumerator RecoverSlow()
+    {
+        yield return new WaitForSeconds(1.0f);
+        movement2D.MoveSpeed = defaultSpeed;
+        slowRate = 1.0f;
     }
 }

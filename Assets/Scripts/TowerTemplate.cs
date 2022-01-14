@@ -11,6 +11,7 @@ public class TowerTemplate : ScriptableObject
     [System.Serializable]
     public struct Weapon
     {
+        public string towerType;
         public Sprite sprite; // 보여지는 타워 이미지(UI)
         public float damage; // 공격력
         public float rate; // 공격 속도
